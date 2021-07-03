@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Card,
-    CardActions,
     CardContent,
     CssBaseline,
     Grid,
@@ -89,7 +88,7 @@ class App extends React.Component {
                     <Container maxWidth={"md"}>
                         <Grid container spacing={4}>
                             {this.state.listOfCompanies.map((company) => (
-                                <Grid item xs={4}>
+                                <Grid item key={company.registryCode} xs={4}>
                                     <Card>
                                         <CardContent>
                                             <Typography variant={"h6"}>
