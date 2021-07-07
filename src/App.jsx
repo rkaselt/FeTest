@@ -7,13 +7,24 @@ import {
     Container,
     AppBar,
     Toolbar,
-    Typography
+    Typography,
+    Box
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import FeTestApi from "./FeTestApi";
 import Company from "./Company"
+import { withStyles } from '@material-ui/core/styles';
+import logo from './tinksmatlogo.jpg';
+import logotwo from './logotwo.PNG';
 
-
+const useStyles = theme => ({
+    container: {
+        padding: theme.spacing(15,0,2),
+    },
+    root: {
+        flexGrow: 1
+    }
+})
 
 class App extends React.Component {
     constructor(props) {
@@ -51,7 +62,6 @@ class App extends React.Component {
         })
     }
 
-
     postCompanyToSystem = async (regCode) => {
         await FeTestApi.post('', {registryCode: regCode
         })
@@ -63,55 +73,71 @@ class App extends React.Component {
     }
 
 
+
     render() {
+        const { classes } = this.props;
         return (
             <>
                 <CssBaseline />
-                <AppBar position="relative">
+                <AppBar position="static"  style={{ background: 'transparent', boxShadow: 'none'}}>
                     <Toolbar>
-                        <Typography variant={"h4"}>
-                            Tinksmat
-                        </Typography>
+                        <img src={logo} alt="logo" width={"130"}/>
                     </Toolbar>
                 </AppBar>
                 <main>
-                    <div>
-                        <Container maxWidth={"sm"}>
-                            <Typography variant={"h3"} align={"center"} color="textPrimary" gutterBottom>
-                                Minu firmad
-                            </Typography>
-                            <Typography variant={"h6"} align={"center"} color={"textSecondary"} paragraph>
-                                EE Äriregistri andmetel on Sinuga seotud järgmised firmad.
-                            </Typography>
+                    <div className={classes.container}>
+                        <Container maxWidth={false}>
+                            <Grid container spacing={2} >
+                                <Grid item> <Box boxShadow={7}
+                                                 borderRadius={16}
+                                                 display="flex"
+                                                 justifyContent="center"
+                                                 alignItems="center"
+                                                 height={88}
+                                                 width={88}>
+                                    <img src={logotwo} alt="logotwo" width={"80"} align={"center"}/>
+                                </Box></Grid>
+                                <Grid item>
+                                    <Typography variant={"h5"} align={"Left"} color="textPrimary" gutterBottom style={{ fontWeight: 600 }}>
+                                    Minu firmad
+                                </Typography>
+                                    <Typography variant={"subtitle"} align={"left"} color={"textSecondary"} paragraph>
+                                        EE Äriregistri andmetel on Sinuga seotud järgmised firmad.
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Container>
                     </div>
-                    <Container maxWidth={"md"}>
-                        <Grid container spacing={4}>
+                    <Container maxWidth={false} className={classes.root}>
+                        <Grid container spacing={2} >
                             {this.state.listOfCompanies.map((company) => (
-                                <Grid item key={company.registryCode} xs={4}>
-                                    <Card>
+                                <Grid item key={company.registryCode} xs={3} className={classes.grid}>
+                                    <Box boxShadow={3} borderRadius={15}>
+                                    <Card style={{height:150}} >
                                         <CardContent>
-                                            <Typography variant={"h6"}>
-                                                {company.name}
-                                            </Typography>
-                                            <Typography>
-                                                {company.registryCode}
-                                            </Typography>
-                                        </CardContent>
+                                        <Typography variant={"h5"} style={{ fontWeight: 600 }}>
+                                            {company.name}
+                                        </Typography>
+                                        <Typography variant={"subtitle"}>
+                                            Reg.nr: {company.registryCode}
+                                        </Typography>
+                                    </CardContent>
                                         <CardContent>
                                             <div>
                                                 {this.isCompanyIdNull(company.id) ?
-                                                <Button onClick={this.postCompanyToSystem.bind(this, company.registryCode)}>
-                                                    Lisa süsteemi
-                                                </Button> :
-                                                    <Typography variant={"h6"}> Süsteemis olemas</Typography>
-                                            }
+                                                    <Button onClick={this.postCompanyToSystem.bind(this, company.registryCode)} color={"primary"} style={{fontWeight: 600}}>
+                                                        Lisa süsteemi
+                                                    </Button> :
+                                                    <Typography> Süsteemis olemas</Typography>
+                                                }
                                             </div>
                                         </CardContent>
                                     </Card>
+                                    </Box>
                                 </Grid>
                             ))}
                         </Grid>
+
                     </Container>
                 </main>
             </>
@@ -119,4 +145,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withStyles(useStyles)(App);
