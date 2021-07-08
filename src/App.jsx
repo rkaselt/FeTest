@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-    Card,
-    CardContent,
     CssBaseline,
     Grid,
     Container,
@@ -16,6 +14,7 @@ import Company from "./Company"
 import { withStyles } from '@material-ui/core/styles';
 import logo from './tinksmatlogo.jpg';
 import logotwo from './logotwo.PNG';
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = theme => ({
     container: {
@@ -23,6 +22,55 @@ const useStyles = theme => ({
     },
     root: {
         flexGrow: 1
+    },
+    text: {
+        fontFamily: "Ubuntu",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: 24,
+        padding: theme.spacing(3,3,0)
+    },
+    text2: {
+        fontFamily: "Open Sans",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 12,
+        padding: theme.spacing(1,3,0)
+    },
+    textSub: {
+        fontFamily: "Open Sans",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 12,
+        padding: theme.spacing(1,1,0)
+    },
+    textHeading: {
+        fontFamily: "Ubuntu",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: 24,
+        padding: theme.spacing(1,1,0),
+        color: '#2D2C30'
+    },
+    textButton: {
+        fontFamily: "Ubuntu",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: 12,
+        color: '#1445F5',
+        padding: theme.spacing(4,3,0),
+    },
+    inSystem: {
+        height : 168,
+        borderRadius: 16,
+        boxShadow: "0px 0px 8px rgba(196, 196, 196, 0.25)"
+    },
+    notInSystem: {
+        border: "2px solid #FFFFFF",
+        height : 168,
+        borderRadius: 16,
+        boxShadow: "0px 0px 8px rgba(196, 196, 196, 0.25)",
+        background: '#F5F7F6'
     }
 })
 
@@ -98,10 +146,10 @@ class App extends React.Component {
                                     <img src={logotwo} alt="logotwo" width={"80"} align={"center"}/>
                                 </Box></Grid>
                                 <Grid item>
-                                    <Typography variant={"h5"} align={"Left"} color="textPrimary" gutterBottom style={{ fontWeight: 600 }}>
+                                    <Typography className={classes.textHeading} gutterBottom>
                                     Minu firmad
                                 </Typography>
-                                    <Typography variant={"subtitle"} align={"left"} color={"textSecondary"} paragraph>
+                                    <Typography className={classes.textSub}>
                                         EE Äriregistri andmetel on Sinuga seotud järgmised firmad.
                                     </Typography>
                                 </Grid>
@@ -109,31 +157,25 @@ class App extends React.Component {
                         </Container>
                     </div>
                     <Container maxWidth={false} className={classes.root}>
-                        <Grid container spacing={2} >
+                        <Grid container spacing={3} >
                             {this.state.listOfCompanies.map((company) => (
                                 <Grid item key={company.registryCode} xs={3} className={classes.grid}>
-                                    <Box boxShadow={3} borderRadius={15}>
-                                    <Card style={{height:150}} >
-                                        <CardContent>
-                                        <Typography variant={"h5"} style={{ fontWeight: 600 }}>
+                                    <Paper className={this.isCompanyIdNull(company.id) ? classes.notInSystem : classes.inSystem}>
+                                        <Typography className={classes.text}>
                                             {company.name}
                                         </Typography>
-                                        <Typography variant={"subtitle"}>
+                                        <Typography gutterBottom className={classes.text2}>
                                             Reg.nr: {company.registryCode}
                                         </Typography>
-                                    </CardContent>
-                                        <CardContent>
                                             <div>
                                                 {this.isCompanyIdNull(company.id) ?
-                                                    <Button onClick={this.postCompanyToSystem.bind(this, company.registryCode)} color={"primary"} style={{fontWeight: 600}}>
+                                                    <Button onClick={this.postCompanyToSystem.bind(this, company.registryCode)} className={classes.textButton} >
                                                         Lisa süsteemi
                                                     </Button> :
-                                                    <Typography> Süsteemis olemas</Typography>
+                                                    null
                                                 }
                                             </div>
-                                        </CardContent>
-                                    </Card>
-                                    </Box>
+                                    </Paper>
                                 </Grid>
                             ))}
                         </Grid>
