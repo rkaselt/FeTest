@@ -8,11 +8,11 @@ import Appbar from "./Components/AppBar"
 import TopPage from "./Components/TopPage"
 import useStyles from "./styles";
 
-export default function FETest(props) {
+export default function FETest() {
     const [listOfCompanies, setListCompany] = useState([]);
 
     useEffect(() => {
-        getDetails()
+        getDetails().then(() => [])
     }, [])
 
 
